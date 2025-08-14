@@ -1,0 +1,227 @@
+Delivery Time Prediction Project – Detailed Report & SOP
+1. Introduction
+
+The purpose of this project is to analyze factors affecting delivery times and to develop a predictive model that can accurately estimate delivery duration for orders.
+This is highly useful for logistics companies to optimize delivery routes, allocate resources efficiently, and improve customer satisfaction.
+
+2. Problem Statement
+
+Given a dataset containing delivery-related features (distance, weather, traffic, courier experience, etc.), the goal is to:
+
+Perform Exploratory Data Analysis (EDA) to identify patterns and trends.
+
+Build a Machine Learning model to predict delivery time.
+
+Generate insights to help businesses improve operations.
+
+3. Dataset Overview
+3.1 Source
+
+The dataset was provided in CSV format.
+
+3.2 Shape
+
+Rows: 1000
+
+Columns: 9
+
+3.3 Features
+Column Name	Description	Data Type
+Order_ID	Unique identifier for each order	Integer
+Distance_km	Delivery distance in kilometers	Float
+Weather	Weather conditions during delivery	Categorical
+Traffic_Level	Traffic conditions during delivery	Categorical
+Time_of_Day	Time when delivery started	Categorical
+Vehicle_Type	Type of vehicle used	Categorical
+Preparation_Time_min	Time taken for order preparation (minutes)	Integer
+Courier_Experience_yrs	Experience of courier (years)	Float
+Delivery_Time_min	Target variable – delivery time in minutes	Integer
+4. Tools & Technologies Used
+
+Python: Core programming language.
+
+Jupyter Notebook: Interactive development.
+
+Libraries:
+
+pandas – Data loading and manipulation.
+
+numpy – Numerical operations.
+
+matplotlib, seaborn – Data visualization.
+
+scikit-learn – Machine learning algorithms and evaluation.
+
+fpdf – Generating PDF reports.
+
+5. Step-by-Step Project Execution
+5.1 Data Loading
+import pandas as pd
+df = pd.read_csv("dataset.csv")
+
+
+Purpose: Load the dataset for processing.
+
+5.2 Data Inspection
+
+Checked dataset shape: (1000, 9)
+
+Checked data types.
+
+Reviewed sample data using:
+
+df.head()
+df.info()
+df.describe()
+
+5.3 Data Cleaning
+
+Handling Missing Values:
+
+Found missing values in: Weather, Traffic_Level, Time_of_Day, Courier_Experience_yrs.
+
+Applied imputation:
+
+Categorical columns → Mode.
+
+Numerical columns → Mean.
+
+Renaming Columns:
+
+Ensured consistent naming for better code readability.
+
+5.4 Exploratory Data Analysis (EDA)
+5.4.1 Univariate Analysis
+
+Distribution of Delivery_Time_min:
+
+sns.histplot(df['Delivery_Time_min'], kde=True)
+
+
+Identified average delivery time ≈ 56.7 minutes.
+
+5.4.2 Bivariate Analysis
+
+Impact of Weather:
+
+sns.boxplot(x='Weather', y='Delivery_Time_min', data=df)
+
+
+Rainy conditions increase delivery time by ~10-15 minutes.
+
+Impact of Traffic Level:
+
+sns.boxplot(x='Traffic_Level', y='Delivery_Time_min', data=df)
+
+
+High traffic conditions increase delays.
+
+Distance vs Delivery Time:
+
+sns.scatterplot(x='Distance_km', y='Delivery_Time_min', hue='Traffic_Level', data=df)
+
+
+Positive correlation between distance and delivery time.
+
+5.5 Feature Encoding
+
+Used One-Hot Encoding for categorical variables:
+
+df = pd.get_dummies(df, drop_first=True)
+
+5.6 Train-Test Split
+from sklearn.model_selection import train_test_split
+X = df.drop("Delivery_Time_min", axis=1)
+y = df["Delivery_Time_min"]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+5.7 Model Selection & Training
+
+Algorithm: Random Forest Regressor (due to its ability to handle categorical + numerical data and non-linear relationships).
+
+from sklearn.ensemble import RandomForestRegressor
+model = RandomForestRegressor(random_state=42)
+model.fit(X_train, y_train)
+
+5.8 Model Evaluation
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+y_pred = model.predict(X_test)
+
+mae = mean_absolute_error(y_test, y_pred)
+rmse = mean_squared_error(y_test, y_pred, squared=False)
+r2 = r2_score(y_test, y_pred)
+
+
+Results:
+
+MAE: 5.90 min
+
+RMSE: 8.82 min
+
+R² Score: 0.83
+
+5.9 Insights
+
+Traffic and Weather are major delay factors.
+
+Longer distances & preparation times increase delivery time.
+
+Model explains 83% of variance – highly reliable.
+
+6. Standard Operating Procedure (SOP) – Reproducing the Project
+Step 1: Setup
+
+Install required libraries:
+
+pip install pandas numpy matplotlib seaborn scikit-learn fpdf
+
+
+Place dataset.csv in the project directory.
+
+Step 2: Load & Inspect Data
+
+Use pandas.read_csv and check shape, types, and missing values.
+
+Step 3: Clean Data
+
+Fill missing values.
+
+Rename inconsistent column names.
+
+Step 4: EDA
+
+Plot distributions and relationships.
+
+Identify patterns in delays.
+
+Step 5: Preprocess Data
+
+Encode categorical variables.
+
+Normalize/scale if needed.
+
+Step 6: Train-Test Split
+
+Split data (80% training, 20% testing).
+
+Step 7: Model Training
+
+Choose Random Forest for regression tasks.
+
+Fit the model with training data.
+
+Step 8: Evaluation
+
+Use MAE, RMSE, R² to measure performance.
+
+Step 9: Insights
+
+Summarize findings from EDA and model.
+
+Step 10: Reporting
+
+Generate a PDF/Word report with visuals, insights, and results.
+
+7. Conclusion
+
+This project successfully built a machine learning model that predicts delivery times with high accuracy. The insights can help logistics companies optimize delivery operations, reduce delays, and improve customer satisfaction.
