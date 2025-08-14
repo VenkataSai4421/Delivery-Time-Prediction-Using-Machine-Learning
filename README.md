@@ -62,6 +62,15 @@ pip install -r requirements.txt
 
 3.Open Jupyter Notebook:
 jupyter notebook food_delivery_project.ipynb
+
+Requirements
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+fpdf
+
 📄 License
 
 This project is licensed under the MIT License.
